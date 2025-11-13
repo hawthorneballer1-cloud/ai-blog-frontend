@@ -11,10 +11,10 @@ function App() {
   const [content, setContent] = useState('');
   
   // --- Reusable Function to Fetch Posts ---
-  // We use useCallback to prevent it from being redefined on every render
   const fetchPosts = useCallback(async () => {
     try {
-      const response = await fetch('/api/posts');
+      // This fetch URL is correct for production
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
@@ -38,7 +38,10 @@ function App() {
     console.log("Submitting new post:", { title, content });
 
     try {
-      const response = await fetch('/api/posts', {
+      // --- THIS IS THE UPDATED LINE ---
+      // It now uses the production URL for the POST request
+      const response = await fetch(`${process.env.REACT_APP_API_URL}/api/posts`, {
+      // --- END OF UPDATE ---
         method: 'POST',
         headers: {
           'Content-Type': 'application/json', // Tell the server we are sending JSON
